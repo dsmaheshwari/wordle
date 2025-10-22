@@ -1,0 +1,74 @@
+@keyframes logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes char-spin {
+    from {
+        transform: rotate3d(1, 1, 1, 0deg);
+    }
+    to {
+        transform: rotate3d(1, 1, 1, 360deg);
+    }
+}
+
+.char-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem 0;
+}
+
+.char-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0 0.4rem;
+}
+
+.char-box {
+    width: 4rem;
+    height: 4rem;
+    background: #E5E5E5;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.is-incorrect-placed {
+    background: #fcc954;
+    animation: char-spin 0.5s ease-in-out;
+    color: #FFF;
+}
+
+.is-correct-placed {
+    background: #92fc54;
+    animation: char-spin 0.5s ease-in-out;
+    color: #FFF;
+}
+
+.is-filled {
+    background: #919191;
+    animation: char-spin 0.5s ease-in-out;
+    color: #FFF;
+}
+
+li {
+    text-align: left;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .logo {
+        animation: logo-spin infinite 20s linear;
+    }
+}
