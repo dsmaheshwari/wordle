@@ -1,5 +1,5 @@
 import React from "react";
-import "./WordleKeyboard.css";
+import "./wordle-keyboard.css";
 
 const ROWS = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -13,7 +13,7 @@ const ALPHAS = [
 ];
 const ALLOWED = new Set([...ALPHAS, "ENTER", "BACKSPACE"]);
 
-function WordleKeyBoard({ onKeyPress, disabled = false, className = "" }) {
+function WordleKeyboard({ onKeyPress, disabled = false, className = "" }) {
   const handleClick = (key) => {
     if (key !== "ENTER" && key !== "BACKSPACE" && disabled) return;
     if (!ALLOWED.has(key)) return;
@@ -46,4 +46,4 @@ function WordleKeyBoard({ onKeyPress, disabled = false, className = "" }) {
   );
 }
 
-export default WordleKeyBoard;
+export default WordleKeyboard;

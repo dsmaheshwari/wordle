@@ -1,13 +1,15 @@
 import {useEffect, useLayoutEffect, useMemo, useState} from "react";
-import WordleWordRow from "./WordleWordRow.jsx";
-import WordleKeyBoard from "./WordleKeyBoard.jsx";
+import WordleWordRow from "../wordle-word-row/wordle-word-row.jsx";
+import WordleKeyboard from "../wordle-keyboard/wordle-keyboard.jsx";
 
-import reactLogo from '../../assets/react.svg'
-import './Wordle.css'
+import reactLogo from '../../../assets/react.svg'
+import '../wordle-screen/wordle-screen.css'
 
-import WordleWordDef from "./WordleWordDef.jsx";
+import WordleWordDef from "../wordle-word-def/wordle-word-def.jsx";
+import RenderComponent from "../../../framework/jsx/Render-Component.jsx";
+import Model from "./model.jsx";
 
-function WordleScreen() {
+function WordleScreenTemplate() {
     const [word, setWord] = useState("");
     const [wordDef, setWordDef] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -19,16 +21,16 @@ function WordleScreen() {
     const [headerText, setHeaderText] = useState("Fetching Today's Wordle");
 
     const [wordMap, setWordMap] = useState({});
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(0);``
 
     const fetchLength = 5;
 
     function fetchWordList() {
-        return fetch(`https://random-word-api.vercel.app/api?length=${fetchLength}&type=uppercase&words=1`);
+        return Model.fetchWordList(fetchLength);
     }
 
     function fetchWordDefinition(word) {
-        return fetch(`https://en.wiktionary.org/api/rest_v1/page/definition/${word}?redirect=false`);
+        return Model.fetchWordDefinition(word);
     }
 
     function renderRows() {
@@ -54,7 +56,7 @@ function WordleScreen() {
 
             if (response.status === 200) {
                 try {
-                    const wordList = await response.json();
+                    const wordList = await response.data;
                     setWord(wordList[0]);
                     setHeaderText("Today's Wordle");
                 } catch (error) {
@@ -91,7 +93,7 @@ function WordleScreen() {
 
         fetchWordDefinition(word.toLowerCase()).then(async (response) => {
             if (response.status === 200) {
-                const definitions = await response.json();
+                const definitions = await response.data;
 
                 setWordDef(definitions?.["en"]);
             }
@@ -196,8 +198,8 @@ function WordleScreen() {
                                         <div className="char-container">
                                             {memoizedRenderRows}
                                         </div>
-                                        <WordleKeyBoard disabled={isKeyBoardDisabled}
-                                                        onKeyPress={onKeyPress}></WordleKeyBoard>
+                                        <WordleKeyboard disabled={isKeyBoardDisabled}
+                                                        onKeyPress={onKeyPress}></WordleKeyboard>
                                     </div>
                             }
                         </>
@@ -209,6 +211,10 @@ function WordleScreen() {
 
         </div>
     );
+}
+
+function WordleScreen() {
+    return RenderComponent(WordleScreenTemplate, {}, {});
 }
 
 export default WordleScreen;

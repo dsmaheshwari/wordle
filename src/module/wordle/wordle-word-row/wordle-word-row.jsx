@@ -1,4 +1,4 @@
-import './Wordle.css'
+import './wordle-word-row.css'
 
 function WordleWordRow({index, rowCharList}) {
     const currentIndex = (index + 1).toString();
