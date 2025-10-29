@@ -8,6 +8,7 @@ import '../wordle-screen/wordle-screen.css'
 import WordleWordDef from "../wordle-word-def/wordle-word-def.jsx";
 import RenderComponent from "../../../framework/jsx/Render-Component.jsx";
 import Model from "./model.jsx";
+import { useAppProperties } from "../../../framework/jsx/app-properties.jsx";
 
 function WordleScreenTemplate() {
     const [word, setWord] = useState("");
@@ -18,7 +19,7 @@ function WordleScreenTemplate() {
 
     const [isKeyBoardDisabled, setIsKeyBoardDisabled] = useState(false);
     const [allRowsFilled, setAllRowsFilled] = useState(false);
-    const [headerText, setHeaderText] = useState("Fetching Today's Wordle");
+    const { headerName, setHeaderName } = useAppProperties();
 
     const [wordMap, setWordMap] = useState({});
     const [count, setCount] = useState(0);``
@@ -52,24 +53,25 @@ function WordleScreenTemplate() {
 
     useLayoutEffect(() => {
         (async () => {
+            setHeaderName("Fetching Today's Wordle");
             const response = await fetchWordList();
 
             if (response.status === 200) {
                 try {
                     const wordList = await response.data;
                     setWord(wordList[0]);
-                    setHeaderText("Today's Wordle");
+                    setHeaderName("Today's Wordle");
                 } catch (error) {
                     console.error(error);
-                    setHeaderText("No Word Today!")
+                    setHeaderName("No Word Today!")
                 }
             } else {
-                setHeaderText("No Word Today!")
+                setHeaderName("No Word Today!")
             }
 
             setIsLoading(false);
         })();
-    }, []);
+    }, [setHeaderName]);
 
     useEffect(() => {
         const rows = word.length || fetchLength;
@@ -144,7 +146,7 @@ function WordleScreenTemplate() {
                 setTimeout(() => {
                     setAllRowsFilled(true);
                     setIsKeyBoardDisabled(true);
-                    setHeaderText(`Today's Wordle was ${word}`);
+                    setHeaderName(`Today's Wordle was ${word}`);
                 }, 2000)
             } else {
                 setIsKeyBoardDisabled(false);
@@ -182,10 +184,9 @@ function WordleScreenTemplate() {
 
     return (
         <div>
-            <h1>{headerText}</h1>
             {!allRowsFilled &&
                 <>
-                    {headerText !== "No Word Today!" &&
+                    {headerName !== "No Word Today!" &&
                         <>
                             {
                                 isLoading ?
